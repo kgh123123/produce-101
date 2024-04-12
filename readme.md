@@ -7,6 +7,8 @@
 5. 관리자가 관리자를 추가할 수 있는 기능
 6. 관리자 페이지에서 투표 데이터를 가지고 그래프를 만들 수 있어야 함
 
+7. asdfasdfasdfasfdasdlfjhalkjfdvhlasdk
+
 ## 사용 예상 기술
 1. python Flask
 2. SQLite
