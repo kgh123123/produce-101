@@ -12,4 +12,5 @@
 ## 사용 예상 기술
 1. python Flask
 2. SQLite
-3. HTML with bootstrap
+3. HTML with bootstrp
+alksdjhflksjdfhvlkajhvipsudjhv
