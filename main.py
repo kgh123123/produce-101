@@ -1,9 +1,10 @@
-from flask import Flask, session,render_template, request, redirect, url_for, flash
+from flask import Flask, session, render_template, request, redirect
 import sqlite3
 
 app = Flask(__name__)
 conn = sqlite3.connect('user.db')
 cursor = conn.cursor()
+app.secret_key = 'LN$oaYB9-5KBT7G'
 
 #SQLite 데이터베이스 초기화
 def init_db():
@@ -19,14 +20,25 @@ def init_db():
 
 @app.route('/')
 def index():
-    userid = session.get('userid', None)
-    return render_template("index.html",name=userid)
+    name:str = session.get('name', "로그인되지 않음")
+    print(f"{name}님이 로그인 했습니다.")
+    return render_template("index.html",name=name)
 
-@app.route('/login', methods=['GET','POST'])  
+@app.route('/login')
 def login():
-    session['userid'] = 'userid' #form에서 가져온 userid를 session에 저장
+    name:str = session.get('name', "로그인되지 않음")
+    return render_template("login.html",name=name)
+
+@app.route('/dashboard')
+def dashboard():
+    name:str = session.get('name', "로그인되지 않음")
+    return render_template("dashboard.html",name=name)
+
+@app.route('/POST_login', methods=['POST'])  
+def POST_login  ():
+    name = request.form['name']  # 폼 데이터에서 'userid' 값을 가져옴
+    session['name'] = name #form에서 가져온 userid를 session에 저장
     return redirect('/') #로그인에 성공하면 홈화면으로 redirect     
-    #return render_template('login.html', form=form)
 
 
 #TODO:GPT의 힘을 빌린 투표코드(현재 따옴표로 주석처리), 로그인 기능 완성 후 연동
