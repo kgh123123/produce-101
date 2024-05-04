@@ -26,7 +26,8 @@ def init_db():
 def index():
     name:str = session.get('name', "로그인되지 않음")
     print(f"{name}님이 로그인 했습니다.")
-    return render_template("index.html",name=name)
+    already_login:str = 'disabled' if name == "로그인되지 않음" else ' '
+    return render_template("index.html",name=name, is_already_login=already_login)
 
 @app.route('/login')
 def login():
@@ -49,10 +50,17 @@ def POST_login():
     global login_error
     try:
         name = request.form['name']  # 폼 데이터에서 'userid' 값을 가져옴
-        cursor.execute("")
-        session['name'] = name #form에서 가져온 userid를 session에 저장
-        login_error = False
-        return redirect('/') #로그인에 성공하면 홈화면으로 redirect
+        cursor.execute('SELECT number, name FROM users')
+        rows = cursor.fetchall()
+        conn.close()
+        #numbers = [row[0] for row in rows]
+        names = [row[1] for row in rows]
+        if name in names:
+            session['name'] = name #form에서 가져온 userid를 session에 저장
+            login_error = False
+            return redirect('/') #로그인에 성공하면 홈화면으로 redirect
+        else:
+            raise Exception("동아리 인원 외의 유저가 로그인을 시도하였습니다.")
     except:
         login_error = True
         return redirect('/login') #로그인에 실패하면 로그인화면으로 redirect
