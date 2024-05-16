@@ -17,16 +17,15 @@
     <script>
       // 네비게이션 바를 동적으로 추가
       fetch("{{ url_for('static', filename='navigation.html')}}")
-          .then(response => response.text())
-          .then(data => {
+        .then(response => response.text())
+        .then(data => {
             var replacename = data.replace("NAME", "{{name}}");
+            replacename = replacename.replace("LOGIN_DISABLED", "{{is_already_login}}");
+            replacename = replacename.replace("DASHBOARD_DISABLED", "disabled");
             document.getElementById('navigation').innerHTML = replacename;
-        }).then(data => {
-            var replacename = data.replace("LOGIN_DISABLED", "{{is_already_login}}");
-            document.getElementById('navigation').innerHTML = replacename;
-        }).then(data => {
-            var replacename = data.replace("DASHBOARD_DISABLED", "disabled");
-            document.getElementById('navigation').innerHTML = replacename;
+        })
+        .catch(error => {
+            console.error('Error fetching navigation HTML:', error);
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
