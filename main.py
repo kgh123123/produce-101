@@ -49,7 +49,7 @@ def POST_login():
     names = [row[1] for row in rows]
     print(numbers)
     print(names)
-    if name in names and number in numbers:
+    if name in names and int(number) in numbers:
         session['name'] = name
         session.pop('login_error', None)
         return redirect('/')
