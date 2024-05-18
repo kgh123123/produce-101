@@ -21,12 +21,12 @@ def init_db():
 @app.route('/')
 def index():
     name = session.get('name', "로그인되지 않음")
-    return render_template("index.html", name=name, is_already_login='disabled' if name != "로그인되지 않음" else '')
+    return render_template("index.html", name=name)
 
 @app.route('/login')
 def login():
     name = session.get('name', "로그인되지 않음")
-    return render_template("login.html", name=name, is_already_login='disabled' if name == "로그인되지 않음" else '')
+    return render_template("login.html", name=name)
 
 @app.route('/vote')
 def vote():
@@ -47,8 +47,6 @@ def POST_login():
     rows = cursor.fetchall()
     numbers = [row[0] for row in rows]
     names = [row[1] for row in rows]
-    print(numbers)
-    print(names)
     if name in names and int(number) in numbers:
         session['name'] = name
         session.pop('login_error', None)

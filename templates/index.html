@@ -13,13 +13,24 @@
     </div>
     <div class="main"></div>
     <script>
+      if ("{{name}}"!="로그인되지 않음") {
+        is_already_login = "href='/logout'>로그아웃"
+      } else {
+        is_already_login = "href='/login'>로그인"
+      }
+      if ("{{name}}"!="로그인되지 않음") {
+        DASHBOARD_DISABLED = ''
+      } else {
+        DASHBOARD_DISABLED = 'disabled'
+      }
+
       // 네비게이션 바를 동적으로 추가
       fetch("{{ url_for('static', filename='navigation.html')}}")
         .then(response => response.text())
         .then(data => {
             var replacename = data.replace("NAME", "{{name}}");
-            replacename = replacename.replace("LOGIN_DISABLED", "{{is_already_login}}");
-            replacename = replacename.replace("DASHBOARD_DISABLED", "disabled");
+            replacename = replacename.replace("href='/login'>로그인", is_already_login);
+            replacename = replacename.replace("DASHBOARD_DISABLED", DASHBOARD_DISABLED);
             document.getElementById('navigation').innerHTML = replacename;
         })
         .catch(error => {
