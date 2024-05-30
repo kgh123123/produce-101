@@ -6,18 +6,6 @@ conn = sqlite3.connect('user.db', check_same_thread=False)
 cursor = conn.cursor()
 app.secret_key = 'LN$oaYB9-5KBT7G'
 
-#SQLite 데이터베이스 초기화
-def init_db():
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            number TEXT NOT NULL,
-            name TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
 @app.route('/')
 def index():
     name = session.get('name', "로그인되지 않음")
@@ -31,7 +19,7 @@ def login():
 @app.route('/vote')
 def vote():
     name = session.get('name', "로그인되지 않음")
-    return render_template("vote.html", name=name)
+    return render_template("vote.html", name=name,candidates=["하나","둘"])
 
 @app.route('/dashboard')
 def dashboard():
@@ -60,5 +48,4 @@ def logout():
     return redirect('/')
 
 if __name__ == '__main__':
-    #init_db()  # 데이터베이스 초기화
     app.run(debug=True)

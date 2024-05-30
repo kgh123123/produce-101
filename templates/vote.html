@@ -12,7 +12,15 @@
       <h1>{{ name }}</h1>
     </div>
     <div class="main">
-      
+      <div class="input-group mb-3">
+        <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+          <option selected>Choose...</option>
+          {% for candidate in candidates %}
+            <option value="{{ candidate }}">{{ candidate }}</option>
+          {% endfor %}
+        </select>
+        <button class="btn btn-outline-secondary" type="button">Button</button>
+      </div>
     </div>
     <script>
       if ("{{name}}"!="로그인되지 않음") {
