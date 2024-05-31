@@ -55,7 +55,7 @@ def POST_login():
     rows = cursor.fetchall()
     numbers = [row[0] for row in rows]
     names = [row[1] for row in rows]
-    if name in names and int(number) in numbers:
+    if name in names and int(number) in numbers:#TODO: 학번과 이름이 일치하지 않아도 로그인되는 버그 수정
         session['name'] = name
         return redirect('/')
     else:
