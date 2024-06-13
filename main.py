@@ -34,7 +34,7 @@ def login():
 @app.route('/vote')
 def vote():
     name = session.get('name', "로그인되지 않음")
-    cursor.execute('SELECT number, name FROM users')
+    cursor.execute('SELECT number, name FROM users')    #투표될 유저들 불러오기
     candidates=[str(row[0])+" "+row[1] for row in cursor.fetchall()]
     return render_template("vote.html", name=name,candidates=candidates)
 
@@ -49,17 +49,23 @@ def dashboard():
 
 @app.route('/POST_login', methods=['POST'])
 def POST_login():
-    number = request.form['number']
+    number = int(request.form['number'])
     name = request.form['name']
-    cursor.execute('SELECT number, name FROM users')
-    rows = cursor.fetchall()
-    numbers = [row[0] for row in rows]
-    names = [row[1] for row in rows]
-    if name in names and int(number) in numbers:#TODO: 학번과 이름이 일치하지 않아도 로그인되는 버그 수정
+    if check_user(number,name): #학번과 이름이 일치하지 않아도 로그인되는 버그 수정
         session['name'] = name
         return redirect('/')
     else:
         raise Exception("동아리 인원 외의 유저가 로그인을 시도하였습니다.")
+
+#유저가 동아리 회원인지 확인하는 함수  
+def check_user(number:int,name:str):
+    cursor.execute('SELECT number FROM users')
+    numbers = [row[0] for row in cursor.fetchall()]
+    if number in numbers:
+        cursor.execute(f'SELECT name FROM users WHERE number = {number}')
+        names = [row[0] for row in cursor.fetchall()]
+        return True if name in names else False
+    return False
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -68,4 +74,4 @@ def logout():
 
 if __name__ == '__main__':
     #init_db()
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

@@ -8,10 +8,10 @@
     <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet">
   </head>
   <body>
-    <div id="navigation">
-      <h1>{{ name }}</h1>
+    <div id="navigation"></div>
+    <div class="main">
+      <h4>{{ name }}  <span class="badge text-bg-secondary">득표수: {{ name }}</span></h4>
     </div>
-    <div class="main"></div>
     <script>
       if ("{{name}}"!="로그인되지 않음") {
         is_already_login = "href='/logout'>로그아웃"
